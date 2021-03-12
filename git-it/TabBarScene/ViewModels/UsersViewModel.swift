@@ -28,14 +28,7 @@ class UsersViewModel {
         } else {
             page = 1
         }
-        
-//        let url = "https://api.github.com/search/users"
-//        let params: [String: Any] = [
-//            "sort": "stars",
-//            "orded": "desc",
-//            "q": language,
-//            "page": page
-//        ]
+
         let url = EndPoints.fetchUsers().url
         let method = EndPoints.fetchUsers().method
         let params = EndPoints.fetchUsers(language: language, page: page).params

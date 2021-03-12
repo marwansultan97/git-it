@@ -48,10 +48,6 @@ class AuthorizationViewController: UIViewController {
         authorizeButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 self?.showEmailAlert()
-                print(self?.navigationController?.viewControllers.count)
-                print(self?.navigationController?.viewControllers)
-                print(UserDefaults.standard.string(forKey: "token") ?? "no token")
-                
             }, onDisposed: {
                 print("Authorize Button Disposed")
             }).disposed(by: bag)

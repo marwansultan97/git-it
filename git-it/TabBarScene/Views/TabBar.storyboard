@@ -287,9 +287,9 @@
                         <color key="selectedImageTintColor" systemColor="labelColor"/>
                     </tabBar>
                     <connections>
-                        <segue destination="WaH-eg-5cy" kind="relationship" relationship="viewControllers" id="S3f-OZ-yvn"/>
                         <segue destination="b5B-dh-mUk" kind="relationship" relationship="viewControllers" id="zNg-PM-A0T"/>
                         <segue destination="eYb-vO-A8I" kind="relationship" relationship="viewControllers" id="HbF-cN-u6l"/>
+                        <segue destination="WaH-eg-5cy" kind="relationship" relationship="viewControllers" id="S3f-OZ-yvn"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r8V-ri-0LB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
