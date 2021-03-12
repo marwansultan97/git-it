@@ -30,7 +30,7 @@ class ProfileRepositoriesViewModel {
         let headers = EndPoints.fetchUserRepos().headers
         let encoding = EndPoints.fetchUserRepos().encoding
         
-        DispatchQueue.global().asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
             NetworkServices.shared.getData(url: url, method: method, headers: headers, parameters: params, encoding: encoding) { [weak self] (result: [ProfileRepositoriesModelElement]?, err) in
                 guard let self = self else { return }
                 if let err = err {
@@ -59,7 +59,7 @@ class ProfileRepositoriesViewModel {
         let encoding = EndPoints.fetchUserStarred().encoding
         
         
-        DispatchQueue.global().asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
             NetworkServices.shared.getData(url: url, method: method, headers: headers, parameters: params, encoding: encoding) { [weak self] (result: [ProfileRepositoriesModelElement]?, err) in
                 guard let self = self else { return }
                 if let err = err {
