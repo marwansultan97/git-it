@@ -28,7 +28,7 @@ class ReposViewController: UIViewController {
         return ReposViewModel()
     }()
     
-    private var sortBehavior = BehaviorRelay<String>(value: "")
+    private var sortBehavior = BehaviorRelay<String>(value: "Objective-C")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +69,8 @@ class ReposViewController: UIViewController {
         }
         
         sortBehavior
-            .filter({ !$0.isEmpty })
+            .skip(1)
+            .take(while: { _  in self.searchBar.searchTextField.text!.isEmpty })
             .subscribe(onNext: { [weak self] language in
                 self?.viewModel.reposBehavior.accept([])
                 self?.viewModel.getRepos(basedOn: "language:\(language)", pagination: false)
@@ -133,11 +134,13 @@ class ReposViewController: UIViewController {
                 self?.viewModel.getRepos(basedOn: query, pagination: false)
             }).disposed(by: bag)
         
-        searchBar.rx.cancelButtonClicked.subscribe(onNext: { [weak self] in
-            self?.view.endEditing(true)
-            self?.searchBar.text = ""
-            self?.viewModel.reposBehavior.accept([])
-            self?.viewModel.getRepos(basedOn: "language:swift", pagination: false)
+        searchBar.rx.cancelButtonClicked.flatMapLatest { _ in
+            return self.sortBehavior
+        }.subscribe(onNext: { query in
+            self.view.endEditing(true)
+            self.searchBar.text = ""
+            self.viewModel.reposBehavior.accept([])
+            self.viewModel.getRepos(basedOn: "language:\(query)", pagination: false)
         }).disposed(by: bag)
         
         searchBar.searchTextField.rx.controlEvent(.editingDidEndOnExit).subscribe(onNext: { [weak self] in

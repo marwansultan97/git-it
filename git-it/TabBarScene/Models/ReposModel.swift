@@ -9,8 +9,8 @@ import Foundation
 
 // MARK: - ReposModel
 struct ReposModel: Codable {
-    let totalCount: Int
-    let incompleteResults: Bool
+    let totalCount: Int?
+    let incompleteResults: Bool?
     let items: [Repo]
 
     enum CodingKeys: String, CodingKey {

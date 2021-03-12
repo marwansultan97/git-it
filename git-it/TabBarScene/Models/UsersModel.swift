@@ -10,7 +10,7 @@ import Foundation
 // MARK: - Users
 struct UsersModel: Codable {
     let totalCount: Int?
-    let incompleteResults: Bool
+    let incompleteResults: Bool?
     let items: [User]
 
     enum CodingKeys: String, CodingKey {

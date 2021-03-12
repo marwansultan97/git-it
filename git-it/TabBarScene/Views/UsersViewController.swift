@@ -27,7 +27,7 @@ class UsersViewController: UIViewController {
         return UsersViewModel()
     }()
     
-    private var sortBehavior = BehaviorRelay<String>(value: "")
+    private var sortBehavior = BehaviorRelay<String>(value: "Objective-C")
     
     
         
@@ -73,6 +73,7 @@ class UsersViewController: UIViewController {
         
         sortBehavior
             .filter({ !$0.isEmpty })
+            .skip(1)
             .subscribe(onNext: { [weak self] language in
                 self?.viewModel.usersBehavior.accept([])
                 self?.viewModel.getUsers(basedOn: "language:\(language)", pagination: false)
@@ -136,11 +137,21 @@ class UsersViewController: UIViewController {
             }).disposed(by: bag)
 
         
-        searchBar.rx.cancelButtonClicked.subscribe(onNext: { [weak self] in
-            self?.view.endEditing(true)
-            self?.searchBar.text = ""
-            self?.viewModel.usersBehavior.accept([])
-            self?.viewModel.getUsers(basedOn: "language:c++", pagination: false)
+//        searchBar.rx.cancelButtonClicked.subscribe(onNext: { [weak self] in
+//            self?.view.endEditing(true)
+//            self?.searchBar.text = ""
+//            self?.viewModel.usersBehavior.accept([])
+//            guard let query = self?.sortBehavior.value else { return }
+//            self?.viewModel.getUsers(basedOn: "language:\(query)", pagination: false)
+//        }).disposed(by: bag)
+        
+        searchBar.rx.cancelButtonClicked.flatMapLatest { _ in
+            return self.sortBehavior
+        }.subscribe(onNext: { query in
+            self.view.endEditing(true)
+            self.searchBar.text = ""
+            self.viewModel.usersBehavior.accept([])
+            self.viewModel.getUsers(basedOn: "language:\(query)", pagination: false)
         }).disposed(by: bag)
         
         searchBar.searchTextField.rx.controlEvent(.editingDidEndOnExit).subscribe(onNext: { [weak self] in
@@ -159,7 +170,7 @@ class UsersViewController: UIViewController {
                 if position > contentHeight - scrollViewHeight {
                     guard !self.viewModel.isPaginating else { return }
                     print("Getting data")
-                    self.viewModel.getUsers(basedOn: "language:c++", pagination: true)
+                    self.viewModel.getUsers(basedOn: "language:\(self.sortBehavior.value)", pagination: true)
                 }
             }).disposed(by: bag)
     }
